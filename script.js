@@ -131,6 +131,40 @@ function showModal(d) {
   document.getElementById("node-modal").style.display = "block";
 }
 
+function addChild() {
+  const newName = prompt("Enter name for new child node:");
+  if (!newName || !selectedNode || !selectedNode.data) return;
+
+  if (!selectedNode.data.children) {
+    selectedNode.data.children = [];
+  }
+
+  selectedNode.data.children.push({ name: newName });
+  db.collection("researchTree").doc("root").set(treeData).then(() => {
+    drawTree(); // update UI
+    closeModal();
+  });
+}
+
+function moveNode(direction) {
+  if (!selectedNode || !selectedNode.parent) return;
+
+  const siblings = selectedNode.parent.data.children;
+  const index = siblings.indexOf(selectedNode.data);
+  if (index === -1) return;
+
+  const targetIndex = direction === 'up' ? index - 1 : index + 1;
+  if (targetIndex < 0 || targetIndex >= siblings.length) return;
+
+  // Swap
+  [siblings[index], siblings[targetIndex]] = [siblings[targetIndex], siblings[index]];
+
+  db.collection("researchTree").doc("root").set(treeData).then(() => {
+    drawTree();
+    closeModal();
+  });
+}
+
 
 
 function closeModal() {

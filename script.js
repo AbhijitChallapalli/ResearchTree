@@ -44,9 +44,11 @@ function loadTree() {
   });
 }
 
-// Draw D3 Tree
+// Draw Tree
 function drawTree() {
-  console.log("📦 Rendering Tree:", JSON.stringify(treeData, null, 2));
+  console.log("🌳 Drawing tree with:", treeData);
+  console.log("📦 Tree data right before rendering:", JSON.stringify(treeData, null, 2));
+
   d3.select("svg").remove();
 
   const margin = { top: 20, right: 40, bottom: 20, left: 150 };
@@ -56,11 +58,11 @@ function drawTree() {
 
   const tree = d3.tree().nodeSize([dx, dy]);
   const root = d3.hierarchy(treeData);
-  tree(root); // layout nodes
+  tree(root); // ❗ Important: run layout before accessing links
 
   const diagonal = d3.linkHorizontal()
     .x(d => d.y)
-    .y(d => d.x);
+    .y(d => d.x); // ❗ Moved up here before it's used
 
   const svg = d3.select("#tree-container")
     .append("svg")
@@ -103,6 +105,7 @@ function drawTree() {
     .attr("text-anchor", d => d.children ? "end" : "start")
     .text(d => d.data.name);
 }
+
 
 // Show modal
 function showModal(d) {

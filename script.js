@@ -61,6 +61,8 @@ const margin = { top: 10, right: 10, bottom: 10, left: 40 };
 // Draw the D3 tree
 function drawTree() {
   console.log("🌳 Drawing tree with:", treeData);
+  console.log("🔥 Tree data right before rendering:", JSON.stringify(treeData, null, 2));
+
   d3.select("svg").remove();
   const width = 960;
   const dx = 10, dy = width / 6;

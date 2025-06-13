@@ -1,16 +1,17 @@
-// Firebase + D3 Tree App
-
 let currentUser = null;
 let treeData = {};
 let selectedNode = null;
 
-// Listen for Auth changes
-auth.onAuthStateChanged(user => {
-  currentUser = user;
-  document.getElementById('logoutBtn').style.display = user ? 'inline' : 'none';
-  document.getElementById('auth-msg').innerText = user ? `Logged in as ${user.email}` : 'Not logged in';
-  if (user) loadTree();
-});
+window.onload = function () {
+  // ✅ Wait until auth is available
+  auth.onAuthStateChanged(user => {
+    currentUser = user;
+    document.getElementById('logoutBtn').style.display = user ? 'inline' : 'none';
+    document.getElementById('auth-msg').innerText = user ? `Logged in as ${user.email}` : 'Not logged in';
+    if (user) loadTree();
+  });
+};
+
 
 // Login function
 function login() {
@@ -52,6 +53,8 @@ function loadTree() {
     drawTree();
   });
 }
+
+const margin = { top: 10, right: 10, bottom: 10, left: 40 };
 
 // Draw the D3 tree
 function drawTree() {

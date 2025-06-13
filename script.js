@@ -121,8 +121,8 @@ function drawTree() {
 
 // Modal logic
 function showModal(d) {
-  if (!d || !d.data || !d.data.name) {
-    console.warn("⚠️ Cannot open modal — node data missing:", d);
+  if (!d || !d.data || typeof d.data.name !== 'string') {
+    console.warn("⚠️ Cannot open modal — invalid or missing node name:", d);
     return;
   }
 
@@ -130,6 +130,7 @@ function showModal(d) {
   document.getElementById("nodeName").value = d.data.name;
   document.getElementById("node-modal").style.display = "block";
 }
+
 
 
 function closeModal() {

@@ -16,15 +16,28 @@ auth.onAuthStateChanged(user => {
 function login() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
-  auth.signInWithEmailAndPassword(email, password).catch(console.error);
+  auth.signInWithEmailAndPassword(email, password)
+    .then(() => {
+      alert("Login successful!");
+    })
+    .catch(error => {
+      alert("Login failed: " + error.message);
+    });
 }
 
-// Signup function
+//sign up
 function signup() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
-  auth.createUserWithEmailAndPassword(email, password).catch(console.error);
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(userCredential => {
+      alert("Signup successful. You are now logged in.");
+    })
+    .catch(error => {
+      alert("Signup failed: " + error.message);
+    });
 }
+
 
 // Logout
 function logout() {

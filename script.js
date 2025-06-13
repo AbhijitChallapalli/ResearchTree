@@ -56,26 +56,33 @@ function loadTree() {
 }
 
 
+// Draw the D3 tree
 const margin = { top: 10, right: 10, bottom: 10, left: 40 };
 
-// Draw the D3 tree
 function drawTree() {
-  console.log(" Drawing tree with:", treeData);
-  console.log("Tree data right before rendering:", JSON.stringify(treeData, null, 2));
+  console.log("🌳 Drawing tree with:", treeData);
+  console.log("📦 Tree data right before rendering:", JSON.stringify(treeData, null, 2));
 
   d3.select("svg").remove();
+
   const width = 960;
   const dx = 20, dy = width / 4;
+
   const tree = d3.tree().nodeSize([dx, dy]);
   const root = d3.hierarchy(treeData);
+
+  tree(root);
+
+  const height = root.height * dx + margin.top + margin.bottom;
 
   root.x0 = dy / 2;
   root.y0 = 0;
 
   const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
+
   const svg = d3.select("#tree-container")
     .append("svg")
-    .attr("viewBox", [-margin.left, -margin.top, width, dx])
+    .attr("viewBox", [-margin.left, -margin.top, width, height])
     .style("font", "10px sans-serif")
     .style("user-select", "none");
 
@@ -88,8 +95,6 @@ function drawTree() {
   const gNode = svg.append("g")
     .attr("cursor", "pointer")
     .attr("pointer-events", "all");
-
-  tree(root);
 
   const link = gLink.selectAll("path")
     .data(root.links())
@@ -113,12 +118,19 @@ function drawTree() {
     .text(d => d.data.name);
 }
 
+
 // Modal logic
 function showModal(d) {
+  if (!d || !d.data || !d.data.name) {
+    console.warn("⚠️ Cannot open modal — node data missing:", d);
+    return;
+  }
+
   selectedNode = d;
   document.getElementById("nodeName").value = d.data.name;
   document.getElementById("node-modal").style.display = "block";
 }
+
 
 function closeModal() {
   document.getElementById("node-modal").style.display = "none";

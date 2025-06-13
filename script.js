@@ -104,7 +104,10 @@ const svg = d3.select("#tree-container")
   node.append("circle")
     .attr("r", 4)
     .attr("fill", d => d.children ? "#555" : "#999")
-    .on("click", d => showModal(d));
+    .on("click", function(event, d) {
+  showModal(d);
+});
+
 
   node.append("text")
     .attr("dy", "0.31em")

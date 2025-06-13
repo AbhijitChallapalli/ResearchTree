@@ -50,9 +50,11 @@ function logout() {
 function loadTree() {
   db.collection("researchTree").doc("root").onSnapshot(doc => {
     treeData = doc.data();
+    console.log("🔥 Tree data from Firestore:", treeData);  // Add this
     drawTree();
   });
 }
+
 
 const margin = { top: 10, right: 10, bottom: 10, left: 40 };
 

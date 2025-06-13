@@ -56,8 +56,7 @@ function loadTree() {
 }
 
 
-// Draw the D3 tree
-const margin = { top: 10, right: 10, bottom: 10, left: 40 };
+
 
 function drawTree() {
   console.log("🌳 Drawing tree with:", treeData);
@@ -65,26 +64,22 @@ function drawTree() {
 
   d3.select("svg").remove();
 
+  const margin = { top: 20, right: 40, bottom: 20, left: 150 };
   const width = 960;
-  const dx = 20, dy = width / 4;
+  const height = 600;
+  const dx = 20, dy = 180;
 
   const tree = d3.tree().nodeSize([dx, dy]);
   const root = d3.hierarchy(treeData);
 
-  tree(root);
+const svg = d3.select("#tree-container")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height)
+  .attr("viewBox", [-margin.left, -margin.top, width, height])
+  .style("font", "12px sans-serif")
+  .style("user-select", "none");
 
-  const height = root.height * dx + margin.top + margin.bottom;
-
-  root.x0 = dy / 2;
-  root.y0 = 0;
-
-  const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
-
-  const svg = d3.select("#tree-container")
-    .append("svg")
-    .attr("viewBox", [-margin.left, -margin.top, width, height])
-    .style("font", "10px sans-serif")
-    .style("user-select", "none");
 
   const gLink = svg.append("g")
     .attr("fill", "none")

@@ -50,7 +50,7 @@ function logout() {
 function loadTree() {
   db.collection("researchTree").doc("root").onSnapshot(doc => {
     treeData = doc.data();
-    console.log("🔥 Tree data from Firestore:", treeData);  // Add this
+    console.log("Tree data from Firestore:", treeData);  // Add this
     drawTree();
   });
 }
@@ -60,12 +60,12 @@ const margin = { top: 10, right: 10, bottom: 10, left: 40 };
 
 // Draw the D3 tree
 function drawTree() {
-  console.log("🌳 Drawing tree with:", treeData);
-  console.log("🔥 Tree data right before rendering:", JSON.stringify(treeData, null, 2));
+  console.log(" Drawing tree with:", treeData);
+  console.log("Tree data right before rendering:", JSON.stringify(treeData, null, 2));
 
   d3.select("svg").remove();
   const width = 960;
-  const dx = 10, dy = width / 6;
+  const dx = 20, dy = width / 4;
   const tree = d3.tree().nodeSize([dx, dy]);
   const root = d3.hierarchy(treeData);
 

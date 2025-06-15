@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Research Tree Tracker</title>
+  <title>My Research Tree</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <!-- html2canvas for capturing the SVG -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<!-- jsPDF for PDF export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
 <body>
-  <h1>📚 Research Tree Tracker</h1>
+  <h1>Research Tree</h1>
 
   <div id="auth-section">
     <input type="email" id="email" placeholder="Email" />
@@ -19,23 +25,50 @@
     <button onclick="login()">Login</button>
     <button onclick="signup()">Sign Up</button>
     <button onclick="logout()" style="display: none;" id="logoutBtn">Logout</button>
+    <button onclick="downloadPNG()">Download PNG</button>
+    <button onclick="downloadPDF()">Download PDF</button>
+    <button id="adminPanelBtn" style="display:none;" onclick="goToAdminPanel()">Admin Panel</button>
+    <button id="requestAccessBtn" style="display:none;" onclick="requestEditAccess()">Request Edit Access</button>
     <p id="auth-msg"></p>
   </div>
 
+  <div style="margin-top: 10px;">
+  <label for="versionHistory">Revert to version:</label>
+  <select id="versionHistory"></select>
+  <button onclick="revertVersion()">Revert</button>
+</div>
+
+
+  <div id="edit-access-request" style="display: none; text-align: center;">
+  <p>You have view-only access.</p>
+</div>
+
+
   <div id="tree-container"></div>
 
-  <!-- node-modal -->
+
+<!-- node-modal -->
 <div id="node-modal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal()">&times;</span>
     <h3>Edit Node</h3>
+
     <input type="text" id="nodeName" placeholder="Node Name" />
-    <button onclick="saveNode()">Save</button>
-    <button onclick="addChild()">Add Child</button> <!-- NEW -->
-    <button onclick="moveNode('up')">Move Up</button>
-    <button onclick="moveNode('down')">Move Down</button>
+
+    <textarea id="nodeNotes" placeholder="Add notes or description..." rows="4" style="width: 100%; margin-top: 10px;"></textarea>
+
+    <input type="url" id="nodeLink" placeholder="Reference link (optional)" style="width: 100%; margin-top: 10px;" />
+
+    <div style="margin-top: 15px;">
+      <button class="edit-btn" onclick="addChild()">Add Child</button>
+      <button class="edit-btn" onclick="saveNode()">Save</button>
+      <button class="edit-btn" onclick="moveNode('up')">Move Up</button>
+      <button class="edit-btn" onclick="moveNode('down')">Move Down</button>
+      <button class="edit-btn" onclick="deleteNode()">Delete</button>
+    </div>
   </div>
 </div>
+
 
   <script src="firebase-config.js"></script>
   <script src="script.js"></script>

@@ -104,7 +104,7 @@ function drawTree() {
 
   const margin = { top: 20, right: 120, bottom: 20, left: 60 };
   const dx = 36;
-  const dy = 180;
+  const dy = 200;
 
   const tree = d3.tree().nodeSize([dx, dy]);
   const root = d3.hierarchy(treeData);
@@ -157,13 +157,14 @@ function drawTree() {
     .style("cursor", "pointer");
 
   node.append("text")
-    .attr("dy", "0.35em")
+    .attr("dy", "0.4em")
     .attr("x", d => d.children ? -14 : 14)
     .attr("text-anchor", d => d.children ? "end" : "start")
     .text(d => d.data.name)
     .style("fill", "#212529")
     .style("font-weight", d => d.depth === 0 ? "bold" : "normal")
-    .style("font-size", "14px");
+   // .style("font-size", d => d.data.name.length > 20 ? "11px" : "14px");
+    .style("font-size", "12px");
 
 node.append("title")
   .text(d => d.data.notes || "No notes");

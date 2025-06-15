@@ -164,18 +164,18 @@ function drawTree() {
     .style("fill", "#212529")
     .style("font-weight", d => d.depth === 0 ? "bold" : "normal")
    // .style("font-size", d => d.data.name.length > 20 ? "11px" : "14px");
-    .style("font-size", "12px");
+    .style("font-size", "14px");
 
 node.append("title")
-  .text(d => d.data.notes || "No notes");
+  .text(d => d.data.notes || d.data.link || "No notes or link");
 
     node.append("text")
-  .filter(d => d.data.notes)
+  .filter(d => d.data.notes || d.data.link)
   .attr("dy", "-1em")  // Move up
-  .attr("x", d => d.children ? -14 : 14)
+  .attr("x", d => d.children ? -12 : 12)
   .attr("text-anchor", d => d.children ? "end" : "start")
   .text("📝")
-  .style("font-size", "8px");
+  .style("font-size", "12px");
 
   // Recalculate viewBox to fit all content
   requestAnimationFrame(() => {
@@ -368,29 +368,43 @@ function revertVersion() {
   const versionId = document.getElementById("versionHistory").value;
   if (!versionId) return alert("Please select a version to revert.");
 
-  const confirmRevert = confirm("Are you sure you want to revert to this version?");
-  if (!confirmRevert) return;
+  // Check edit access first
+  const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
 
-  db.collection("treeVersions").doc(versionId).get()
+  db.collection("approvedUsers").doc(currentUser.email).get()
     .then(doc => {
-      if (!doc.exists) throw new Error("Version not found.");
-      const versionData = doc.data();
+      const isApproved = doc.exists;
 
-      treeData = versionData.tree; // ✅ assign here
-      return db.collection("researchTree").doc("root").set(treeData);
+      if (!isAdmin && !isApproved) {
+        alert("You do not have permission to revert versions.");
+        return;
+      }
+
+      const confirmRevert = confirm("Are you sure you want to revert to this version?");
+      if (!confirmRevert) return;
+
+      db.collection("treeVersions").doc(versionId).get()
+        .then(doc => {
+          if (!doc.exists) throw new Error("Version not found.");
+          const versionData = doc.data();
+
+          treeData = versionData.tree; // ✅ assign here
+          return db.collection("researchTree").doc("root").set(treeData);
+        })
+        .then(() => {
+          drawTree();
+          alert("Tree reverted successfully.");
+        })
+        .catch(err => {
+          console.error("Error reverting tree:", err.message);
+          alert("Failed to revert version.");
+        });
     })
-    .then(() => {
-      drawTree();
-      alert("Tree reverted successfully.");
-    })
-    .catch(err => {
-      console.error("Error reverting tree:", err.message);
-      alert("Failed to revert version.");
+    .catch(error => {
+      console.error("Error checking access:", error.message);
+      alert("Could not verify your permissions.");
     });
 }
-
-
-
 
 
 // Download as PNG

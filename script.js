@@ -17,7 +17,7 @@ window.onload = function () {
 
       // Always show admin panel for admin
       if (user.email === ADMIN_EMAIL) {
-        document.getElementById('adminPanelBtn').style.display = 'inline';
+        document.getElementById('adminPanelBtn').style.display = 'inline-block';
         toggleEditingFeatures(true); //  Admins always get edit access
         document.getElementById('edit-access-request').style.display = 'none';
         return; //  Skip further approval check
@@ -103,8 +103,8 @@ function drawTree() {
   d3.select("svg").remove();
 
   const margin = { top: 20, right: 120, bottom: 20, left: 60 };
-  const dx = 36;
-  const dy = 200;
+  const dx = 50;
+  const dy = 300;
 
   const tree = d3.tree().nodeSize([dx, dy]);
   const root = d3.hierarchy(treeData);
@@ -117,7 +117,7 @@ function drawTree() {
     .style("background-color", "#f8f9fa");
 
   const g = svg.append("g")
-  .attr("transform", `translate(${margin.left},${margin.top}) scale(0.8)`);
+  .attr("transform", `translate(${margin.left},${margin.top})`);
 
 
   const gLink = g.append("g")
@@ -164,7 +164,7 @@ function drawTree() {
     .style("fill", "#212529")
     .style("font-weight", d => d.depth === 0 ? "bold" : "normal")
    // .style("font-size", d => d.data.name.length > 20 ? "11px" : "14px");
-    .style("font-size", "14px");
+    .style("font-size", "18px");
 
 node.append("title")
   .text(d => d.data.notes || d.data.link || "No notes or link");

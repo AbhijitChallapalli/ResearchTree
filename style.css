@@ -1,8 +1,13 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   margin: 20px;
   background-color: #f9f9f9;
   color: #333;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 h1 {
@@ -12,14 +17,45 @@ h1 {
 }
 
 #auth-section {
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 20px;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+
+/* make sure when you unhide it, it's inline-block */
+#adminPanelBtn {
+  display: inline-block !important;
+  margin-left: 5px;  /* add a little space from the previous button */
+}
+
+
 #auth-section input {
-  margin: 5px;
-  padding: 8px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   font-size: 14px;
+}
+
+#auth-section button {
+  padding: 10px 15px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#auth-section button:hover {
+  background-color: #2980b9;
 }
 
 #tree-container {
@@ -28,14 +64,17 @@ h1 {
   justify-content: center;
   overflow-x: auto;
   padding: 10px;
-  min-height: 400px;
+  min-height: 600px;
 }
 
-/* SVG responsive layout */
-svg {
-  max-width: 100%;
-  height: auto;
+/* style.css */
+
+#tree-container svg {
+  max-width: none;       /* allow it to exceed the container width */
+  width: 1800px;         /* or whatever full width you want */
+  height: 900px;         /* match a comfortable height */
 }
+
 
 /* Modal styles */
 .modal {
@@ -92,4 +131,53 @@ svg {
 
 .close:hover {
   color: #000;
+}
+
+footer {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 14px;
+  color: #555;
+}
+
+footer a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: inherit;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+#versionHistory {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.version-controls {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.version-controls button {
+  padding: 8px 12px;
+  margin-left: 5px;
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.version-controls button:hover {
+  background-color: #5a6268;
+}
+
+#edit-access-request {
+  text-align: center;
+  margin-top: 15px;
+  color: #e74c3c;
 }

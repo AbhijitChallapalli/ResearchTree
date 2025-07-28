@@ -6,8 +6,10 @@
   <title>My Research Tree</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"
+></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"
+></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <!-- html2canvas for capturing the SVG -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -22,9 +24,10 @@
 
 </head>
 <body>
-  <h1>Research Tree</h1>
+  <div class="container">
+    <h1>Research Tree</h1>
 
-  <div id="auth-section">
+    <div id="auth-section">
     <input type="email" id="email" placeholder="Email" />
     <input type="password" id="password" placeholder="Password" />
     <button onclick="login()">Login</button>
@@ -35,34 +38,33 @@
     <button id="adminPanelBtn" style="display:none;" onclick="goToAdminPanel()">Admin Panel</button>
     <button id="requestAccessBtn" style="display:none;" onclick="requestEditAccess()">Request Edit Access</button>
     <p id="auth-msg"></p>
+    </div>
+
+    <div class="version-controls">
+      <label for="versionHistory">Revert to version:</label>
+      <select id="versionHistory"></select>
+      <button onclick="revertVersion()">Revert</button>
+    </div>
+
+    <div id="edit-access-request" style="display: none;">
+      <p>You have view-only access.</p>
+    </div>
+
+    <div id="tree-container"></div>
+
+    <footer>
+      <p>Built with ❤️ by <strong>Abhijit Challapalli</strong></p>
+      <p>
+        <a href="https://github.com/AbhijitChallapalli" target="_blank">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        |
+        <a href="https://www.linkedin.com/in/abhijit-c-b5876814b/" target="_blank">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+      </p>
+    </footer>
   </div>
-
-  <div style="margin-top: 10px;">
-  <label for="versionHistory">Revert to version:</label>
-  <select id="versionHistory"></select>
-  <button onclick="revertVersion()">Revert</button>
-</div>
-
-
-  <div id="edit-access-request" style="display: none; text-align: center;">
-  <p>You have view-only access.</p>
-</div>
-
-
-  <div id="tree-container"></div>
-
-  <footer style="text-align: center; margin-top: 40px; font-size: 14px; color: #555;">
-  <p>Built with ❤️ by <strong>Abhijit Challapalli</strong></p>
-  <p>
-    <a href="https://github.com/AbhijitChallapalli" target="_blank" style="margin-right: 15px; text-decoration: none; color: inherit;">
-      <i class="fab fa-github"></i> GitHub
-    </a>
-    |
-    <a href="https://www.linkedin.com/in/abhijit-c-b5876814b/" target="_blank" style="margin-left: 15px; text-decoration: none; color: inherit;">
-      <i class="fab fa-linkedin"></i> LinkedIn
-    </a>
-  </p>
-</footer>
 
 
 <!-- node-modal -->

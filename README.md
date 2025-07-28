@@ -98,7 +98,6 @@ researchtree/
 This is a static front‑end app. You can host it on any static‑site provider, such as:
 
 * GitHub Pages
-* Netlify
 * Firebase Hosting
 
 ## License

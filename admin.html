@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel Research Tree</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/x-icon" href="images/logo.png" />
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <h1>Admin Panel Research Tree</h1>
-
+  <main>
   <div id="admin-auth">
     <input type="email" id="adminEmail" placeholder="Admin Email" />
     <input type="password" id="adminPassword" placeholder="Admin Password" />
@@ -63,5 +64,19 @@
       db.collection("accessRequests").doc(id).delete().then(loadRequests);
     }
   </script>
+  
+</main>
+        <footer>
+        <p>Built with ❤️ by <strong>Abhijit Challapalli</strong></p>
+        <p>
+          <a href="https://github.com/AbhijitChallapalli" target="_blank">
+            <i class="fab fa-github"></i> GitHub
+          </a>
+          |
+          <a href="https://www.linkedin.com/in/abhijit-c-b5876814b/" target="_blank">
+            <i class="fab fa-linkedin"></i> LinkedIn
+          </a>
+        </p>
+      </footer>
 </body>
 </html>

@@ -3,94 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Research Tree</title>
+  <title>Home — ResearchTree</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"
-></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"
-></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <!-- html2canvas for capturing the SVG -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-<!-- jsPDF for PDF export -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<!-- Font Awesome CDN -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<link rel="icon" type="image/x-icon" href="images/logo.png" />
-
+  <link rel="icon" type="image/x-icon" href="images/logo.png" />
+  <!-- Firebase libs needed for auth -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Research Tree</h1>
-
-    <div id="auth-section">
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
-    <button onclick="signup()">Sign Up</button>
-    <button onclick="logout()" style="display: none;" id="logoutBtn">Logout</button>
-    <button onclick="downloadPNG()">Download PNG</button>
-    <button onclick="downloadPDF()">Download PDF</button>
-    <button id="adminPanelBtn" style="display:none;" onclick="goToAdminPanel()">Admin Panel</button>
-    <button id="requestAccessBtn" style="display:none;" onclick="requestEditAccess()">Request Edit Access</button>
-    <p id="auth-msg"></p>
+  <nav class="main-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="trees.html">My Trees</a></li>
+      <li id="adminTab" style="display:none;"><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+  <main>
+    <section class="auth-section">
+    <div class="auth-controls">
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="signup()">Sign Up</button>
+      <button onclick="login()">Login</button>
+      <button onclick="logout()" id="logoutBtn" style="display:none;">Logout</button>
+      <p id="auth-msg"></p>
     </div>
+  </section>
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1>Our Research Team</h1>
+<p class="justified">
+  Hello! I’m <strong>Abhijit Challapalli</strong>, a PhD student at <strong>The University of Texas at Arlington</strong>, working under the supervision of <strong>
+    Dr. Farhad Kamangar</strong>. I’m proud to be part of a research team that dives into Probabilistic Models and Diffusion Models every day.
+     We created the Research Tree platform—an intuitive tool that helps collaborators visualize and annotate complex ideas. 
+     We also love exploring new ways to teach and apply mathematics within machine learning and deep learning, 
+     always pushing each other toward fresh discoveries and real-world impact. For any changes or edits,
+    please email <a href="mailto:abhijitchallapalli99@gmail.com">abhijitchallapalli99@gmail.com</a>.
+</p>
 
-    <div class="version-controls">
-      <label for="versionHistory">Revert to version:</label>
-      <select id="versionHistory"></select>
-      <button onclick="revertVersion()">Revert</button>
-    </div>
 
-    <div id="edit-access-request" style="display: none;">
-      <p>You have view-only access.</p>
-    </div>
-
-    <div id="tree-container"></div>
-
-    <footer>
-      <p>Built with ❤️ by <strong>Abhijit Challapalli</strong></p>
-      <p>
-        <a href="https://github.com/AbhijitChallapalli" target="_blank">
-          <i class="fab fa-github"></i> GitHub
-        </a>
-        |
-        <a href="https://www.linkedin.com/in/abhijit-c-b5876814b/" target="_blank">
-          <i class="fab fa-linkedin"></i> LinkedIn
-        </a>
       </p>
-    </footer>
-  </div>
-
-
-<!-- node-modal -->
-<div id="node-modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h3>Edit Node</h3>
-
-    <input type="text" id="nodeName" placeholder="Node Name" />
-
-    <textarea id="nodeNotes" placeholder="Add notes or description..." rows="4" style="width: 100%; margin-top: 10px;"></textarea>
-
-    <input type="url" id="nodeLink" placeholder="Reference link (optional)" style="width: 100%; margin-top: 10px;" />
-
-    <div style="margin-top: 15px;">
-      <button class="edit-btn" onclick="addChild()">Add Child</button>
-      <button class="edit-btn" onclick="saveNode()">Save</button>
-      <button class="edit-btn" onclick="moveNode('up')">Move Up</button>
-      <button class="edit-btn" onclick="moveNode('down')">Move Down</button>
-      <button class="edit-btn" onclick="deleteNode()">Delete</button>
+      <img src="images/logo.png" alt="Team Photo" class="team-photo">
     </div>
-  </div>
-</div>
+  </section>
 
 
-  <script src="firebase-config.js"></script>
+  </main>
+
+  <!-- exact same footer as before -->
+  <footer>
+    <p>Built with ❤️ by <strong>Abhijit Challapalli</strong></p>
+    <p>
+      <a href="https://github.com/AbhijitChallapalli" target="_blank">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      |
+      <a href="https://www.linkedin.com/in/abhijit-c-b5876814b/" target="_blank">
+        <i class="fab fa-linkedin"></i> LinkedIn
+      </a>
+    </p>
+  </footer>
+
+  <!-- bring in your full script.js (auth + tree), but tree code will be skipped -->
   <script src="script.js"></script>
 </body>
 </html>

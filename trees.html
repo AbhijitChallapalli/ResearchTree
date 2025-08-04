@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Trees — ResearchTree</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Firebase + Firestore + D3 + html2canvas/jsPDF + Font Awesome -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="images/logo.png" />
+  <script src="firebase-config.js"></script>
+</head>
+<body>
+  <nav class="main-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="trees.html">My Trees</a></li>
+      <li id="adminTab" style="display:none;"><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+
+  <section id="trees">
+    <div class="container">
+      <h1>Research Tree</h1>
+
+      <div id="auth-section" class="auth-controls">
+        <button onclick="logout()" id="logoutBtn" style="display:none;">Logout</button>
+        <button onclick="downloadPNG()">Download PNG</button>
+        <button onclick="downloadPDF()">Download PDF</button>
+        <button id="requestAccessBtn" style="display:none;" onclick="requestEditAccess()">Request Edit Access</button>
+        <p id="auth-msg"></p>
+      </div>
+
+      <div class="version-controls">
+        <label for="versionHistory">Revert to version:</label>
+        <select id="versionHistory"></select>
+        <button onclick="revertVersion()">Revert</button>
+      </div>
+
+      <div id="edit-access-request" style="display: none;">
+        <p>You have view-only access.</p>
+      </div>
+
+      <div id="tree-container"></div>
+
+      <footer>
+        <p>Built with ❤️ by <strong>Abhijit Challapalli</strong></p>
+        <p>
+          <a href="https://github.com/AbhijitChallapalli" target="_blank">
+            <i class="fab fa-github"></i> GitHub
+          </a>
+          |
+          <a href="https://www.linkedin.com/in/abhijit-c-b5876814b/" target="_blank">
+            <i class="fab fa-linkedin"></i> LinkedIn
+          </a>
+        </p>
+      </footer>
+    </div>
+  </section>
+
+<div id="node-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h3>Edit Node</h3>
+    <input type="text" id="nodeName" placeholder="Node Name" />
+    <textarea id="nodeNotes" placeholder="Add notes or description..."
+              rows="4" style="width: 100%; margin-top: 10px;"></textarea>
+    <input type="url" id="nodeLink" placeholder="Reference link (optional)"
+           style="width: 100%; margin-top: 10px;" />
+    <div style="margin-top: 15px;">
+      <button class="edit-btn" onclick="addChild()">Add Child</button>
+      <button class="edit-btn" onclick="saveNode()">Save</button>
+      <button class="edit-btn" onclick="moveNode('up')">Move Up</button>
+      <button class="edit-btn" onclick="moveNode('down')">Move Down</button>
+      <button class="edit-btn" onclick="deleteNode()">Delete</button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- now include the single script.js on this page too -->
+  <script src="script.js"></script>
+</body>
+</html>

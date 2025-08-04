@@ -1,9 +1,26 @@
-body {
-  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  margin: 20px;
-  background-color: #f9f9f9;
-  color: #333;
+:root {
+  /* UTA Primary */
+  --uta-blue:   #0064B1;
+  --uta-orange: #F58025;
+
+  /* A couple of accessible secondaries */
+  --uta-gray-light: #BDD6E6;
+  --uta-gray-dark:  #003865;
 }
+
+body {
+  background: #f8f8f8;
+  color: #212121;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main{
+  flex:1;
+}
+
 
 .container {
   max-width: 1000px;
@@ -16,37 +33,23 @@ h1 {
   margin-bottom: 30px;
 }
 
-#auth-section {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-  background-color: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-
 /* make sure when you unhide it, it's inline-block */
 #adminPanelBtn {
   display: inline-block !important;
   margin-left: 5px;  /* add a little space from the previous button */
 }
 
-
-#auth-section input {
+/* shared across pages */
+.auth-controls input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
 }
 
-#auth-section button {
+.auth-controls button {
   padding: 10px 15px;
-  background-color: #3498db;
+  background-color: var(--uta-blue);
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -54,9 +57,16 @@ h1 {
   transition: background-color 0.2s;
 }
 
-#auth-section button:hover {
-  background-color: #2980b9;
+.auth-controls button:hover {
+  background-color: #004080; /* a darker blue */
 }
+
+/* Team paragragph start */
+.justified {
+  text-align: justify;
+}
+/* Team paragragph end */
+
 
 #tree-container {
   margin-top: 40px;
@@ -75,6 +85,7 @@ h1 {
   height: 900px;         /* match a comfortable height */
 }
 
+/* Edit Child node css end*/
 
 /* Modal styles */
 .modal {
@@ -89,49 +100,72 @@ h1 {
 }
 
 .modal-content {
-  background-color: #fff;
+  width: 400px;                /* a bit roomier */
   padding: 20px;
-  width: 300px;
+  background-color: #fff;
   border-radius: 8px;
-  position: relative;
-  text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.modal-content input {
-  width: 90%;
-  padding: 8px;
-  margin: 10px 0;
+/* Header */
+.modal-content h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--uta-blue);
+  text-align: center;
+}
+
+/* Close icon */
+.modal-content .close {
+  font-size: 1.5rem;
+  color: #555;
+  cursor: pointer;
+}
+.modal-content .close:hover {
+  color: #222;
+}
+
+/* Text inputs and textarea */
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  box-sizing: border-box;
 }
 
-.modal-content button {
-  padding: 8px 16px;
-  margin-top: 10px;
-  background-color: #3498db;
-  color: white;
+/* Button container: evenly space the edit buttons */
+.modal-content > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* Edit-mode buttons */
+.modal-content button.edit-btn {
+  flex: 1 1 100px;            /* at least 100px wide */
+  padding: 8px 12px;
+  background-color: var(--uta-blue);
+  color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
 }
 
-.modal-content button:hover {
-  background-color: #2980b9;
+.modal-content button.edit-btn:hover {
+  background-color: #004080;  /* darker UTA blue */
 }
-
-.close {
-  position: absolute;
-  right: 10px;
-  top: 5px;
-  font-size: 22px;
-  cursor: pointer;
-  color: #999;
-}
-
-.close:hover {
-  color: #000;
-}
+/* Edit Child node css end*/
 
 footer {
   text-align: center;
@@ -181,3 +215,78 @@ footer a:hover {
   margin-top: 15px;
   color: #e74c3c;
 }
+
+/* NAV */
+.main-nav {
+  background: var(--uta-blue);
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+}
+.main-nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* HERO */
+.hero {
+  background: var(--uta-gray-light);
+  padding: 4rem 1rem;
+  text-align: center;
+}
+.hero-content h1 {
+  color: var(--uta-blue);
+  margin-bottom: 1rem;
+}
+.hero-content p {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  line-height: 1.5;
+}
+.team-photo {
+  max-width: 200px;
+  border-radius: 8px;
+}
+
+/* for admin html*/
+/* Admin auth styling — same as #auth-section */
+#admin-auth {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#admin-auth input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+#admin-auth button {
+  padding: 10px 15px;
+  background-color: #004080;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#admin-auth button:hover {
+  background-color: #004080;
+}
+/* end of admin html*/

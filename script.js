@@ -11,9 +11,11 @@ window.onload = function () {
     document.getElementById('logoutBtn').style.display = user ? 'inline' : 'none';
     document.getElementById('auth-msg').innerText = user ? `Logged in as ${user.email}` : 'Not logged in';
 
-    if (user) {
+    if (user && document.getElementById('tree-container')) {
+
       loadTree();
       fetchVersions();
+      }
 
       // Always show admin panel for admin
       if (user.email === ADMIN_EMAIL) {
@@ -33,9 +35,8 @@ window.onload = function () {
           document.getElementById('requestAccessBtn').style.display = 'inline';
         }
       });
-    }
-  });
-};
+    });
+  };
 
 
 function toggleEditingFeatures(isApproved) {
@@ -103,8 +104,8 @@ function drawTree() {
   d3.select("svg").remove();
 
   const margin = { top: 20, right: 120, bottom: 20, left: 60 };
-  const dx = 50;
-  const dy = 300;
+  const dx = 70;
+  const dy = 350;
 
   const tree = d3.tree().nodeSize([dx, dy]);
   const root = d3.hierarchy(treeData);
@@ -164,7 +165,7 @@ function drawTree() {
     .style("fill", "#212529")
     .style("font-weight", d => d.depth === 0 ? "bold" : "normal")
    // .style("font-size", d => d.data.name.length > 20 ? "11px" : "14px");
-    .style("font-size", "18px");
+    .style("font-size", "24px");
 
 node.append("title")
   .text(d => d.data.notes || d.data.link || "No notes or link");
@@ -418,54 +419,102 @@ function downloadPNG() {
   });
 }
 
-// Download as PDF
 function downloadPDF() {
-  const container = document.getElementById('tree-container');
+  // Pull the constructor from the UMD bundle
   const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: 'a4' });
 
-  html2canvas(container).then(canvas => {
+  const container = document.getElementById('tree-container');
+  html2canvas(container, {
+    width: container.scrollWidth,
+    height: container.scrollHeight,
+    windowWidth: container.scrollWidth,
+    windowHeight: container.scrollHeight,
+  }).then(canvas => {
     const imgData = canvas.toDataURL('image/png');
-    const imgProps = pdf.getImageProperties(imgData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-    // Add the image of the tree
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    // Create PDF in points for consistent sizing
+    const pdf = new jsPDF('landscape', 'pt', 'a4');
+    const pageWidth  = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
 
-    // Add a new page for notes
+    // Calculate scale to fit the entire tree on one page
+    const canvasWidth  = canvas.width;
+    const canvasHeight = canvas.height;
+    const scale = Math.min(pageWidth  / canvasWidth,
+                           pageHeight / canvasHeight);
+
+    const imgWidth  = canvasWidth  * scale;
+    const imgHeight = canvasHeight * scale;
+    const marginX = (pageWidth  - imgWidth ) / 2;
+    const marginY = (pageHeight - imgHeight) / 2;
+
+    // Add the scaled tree image to the first page
+    pdf.addImage(
+      imgData,
+      'PNG',
+      marginX,
+      marginY,
+      imgWidth,
+      imgHeight
+    );
+
+    // Add a second page for Node Notes Summary
     pdf.addPage();
     pdf.setFontSize(14);
     pdf.text("Node Notes Summary", 40, 40);
 
     let y = 70;
-    const traverse = (node, depth = 0) => {
-      const indent = " ".repeat(depth * 2);
-      const label = `${indent}• ${node.name || "Unnamed"}`;
-      pdf.text(label, 40, y);
-      y += 20;
+    const lineHeight = 16;
+
+    // Recursively traverse treeData for notes
+    function traverse(node, depth = 0) {
+      const indent = depth * 10;
+      const label = `${node.name || 'Unnamed'}`;
+      pdf.text(label, 40 + indent, y);
+      y += lineHeight;
 
       if (node.notes) {
         pdf.setFontSize(10);
-        pdf.text(`${indent}   Notes: ${node.notes}`, 50, y);
-        y += 15;
+        pdf.text(`Notes: ${node.notes}`, 40 + indent + 10, y);
+        y += lineHeight;
+        pdf.setFontSize(14);
       }
       if (node.link) {
-        pdf.text(`${indent}   Link: ${node.link}`, 50, y);
-        y += 15;
+        pdf.setFontSize(10);
+        pdf.text(`Link: ${node.link}`, 40 + indent + 10, y);
+        y += lineHeight;
+        pdf.setFontSize(14);
       }
-      pdf.setFontSize(14);
+
+      // New page if we run out of space
+      if (y > pageHeight - 40) {
+        pdf.addPage();
+        y = 40;
+      }
 
       (node.children || []).forEach(child => traverse(child, depth + 1));
-    };
+    }
 
-    traverse(treeData);  // Assumes treeData has the tree structure
+    traverse(treeData);
+
+    // Save the PDF
     pdf.save("research_tree.pdf");
+  }).catch(err => {
+    console.error("Error generating PDF:", err);
+    alert("Failed to generate PDF. See console for details.");
   });
 }
+
 
 
 // Close modal
 function closeModal() {
   document.getElementById("node-modal").style.display = "none";
 }
+
+//authentication
+firebase.auth().onAuthStateChanged(user => {
+  if (user && user.email === ADMIN_EMAIL) {
+    document.getElementById('adminTab').style.display = 'block';
+  }
+});

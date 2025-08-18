@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Account · Research Tree</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/x-icon" href="images/logo.png" />
+
+  <!-- Page-scoped tweaks to stack fields nicely inside your existing #admin-auth styles -->
+  <style>
+    /* only affects this page */
+    #admin-auth .stack { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 10px; 
+      width: 100%; 
+      max-width: 480px; 
+    }
+    #admin-auth .actions { 
+      display: flex; 
+      flex-direction: column-reverse; 
+      gap: 8px; 
+      width: 100%; 
+      max-width: 480px; 
+    }
+    #signupMsg { min-height: 1.25rem; color: var(--uta-gray-dark); }
+  </style>
+
+  <!-- Firebase (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<main>
+  <h1>Create your account</h1>
+
+  <div id="admin-auth">
+    <form id="signupForm" class="form-grid" novalidate>
+      <label for="signupEmail">Email</label>
+      <input type="email" id="signupEmail" placeholder="Email" required />
+
+      <label for="signupPassword">Password</label>
+      <input type="password" id="signupPassword" placeholder="Password" required />
+
+      <label for="signupPassword2">Confirm password</label>
+      <input type="password" id="signupPassword2" placeholder="Re-enter password" required />
+
+      <!-- checkbox spans the full row -->
+      <label class="full-row" for="showPw" style="display:flex; align-items:center; gap:.5rem;">
+        <input type="checkbox" id="showPw" /> Show password
+      </label>
+
+      <!-- message spans full row -->
+      <div id="signupMsg" class="full-row" style="min-height:1.25rem;"></div>
+
+      <!-- buttons span full row (kept stacked & full-width like your screenshot) -->
+      <div class="full-row">
+        <button id="signupBtn" type="submit" class="btn primary" style="width:100%;">Create account</button>
+        <button type="button" class="btn" style="width:100%; margin-top:.5rem;" onclick="window.location.href='index.html'">
+          Back to Login
+        </button>
+      </div>
+    </form>
+  </div>
+</main>
+
+  <footer>
+    <p>Built with ❤️ by <strong>Abhijit Challapalli</strong></p>
+    <p>
+      <a href="https://github.com/AbhijitChallapalli" target="_blank">GitHub</a> |
+      <a href="https://www.linkedin.com/in/abhijit-c-b5876814b/" target="_blank">LinkedIn</a>
+    </p>
+  </footer>
+
+  <script src="firebase-config.js"></script>
+  <script src="signup.js"></script>
+</body>
+</html>

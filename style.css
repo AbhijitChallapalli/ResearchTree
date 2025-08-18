@@ -290,3 +290,23 @@ footer a:hover {
   background-color: #004080;
 }
 /* end of admin html*/
+
+/* Signup form: label on the left, input on the right */
+#admin-auth .form-grid {
+  display: grid;
+  grid-template-columns: 180px minmax(240px, 1fr);
+  gap: 12px 16px;           /* row gap | column gap */
+  align-items: center;      /* vertically center label/input */
+  width: 100%;
+  max-width: 720px;         /* fits your card nicely */
+}
+
+#admin-auth .form-grid .full-row {
+  grid-column: 1 / -1;      /* span both columns */
+}
+
+#admin-auth .form-grid input[type="email"],
+#admin-auth .form-grid input[type="password"] {
+  width: 100%;
+  box-sizing: border-box;
+}
